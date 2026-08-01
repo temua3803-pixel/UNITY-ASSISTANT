@@ -6,21 +6,29 @@ on:
 
 jobs:
   build:
-    name: Build AssetBundle for Android
+    name: Build AssetBundle
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+
       - name: Build AssetBundles
         uses: game-ci/unity-builder@v4
         with:
-          targetPlatform: Android
+          targetPlatform: StandaloneWindows64
+          # Если нужен Android, поменяй StandaloneWindows64 на Android
           customParameters: -executeMethod AutoBundleBuilder.Build
+          unityVersion: 2022.3.2f1
+          allowFreeLicense: true
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: BasketballRoom-Bundle
+          name: GameAssetBundle
           path: Assets/StreamingAssets
-
