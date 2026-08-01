@@ -1,0 +1,26 @@
+name: Build Unity AssetBundle
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    name: Build AssetBundle for Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build AssetBundles
+        uses: game-ci/unity-builder@v4
+        with:
+          targetPlatform: Android
+          customParameters: -executeMethod AutoBundleBuilder.Build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: BasketballRoom-Bundle
+          path: Assets/StreamingAssets
+
